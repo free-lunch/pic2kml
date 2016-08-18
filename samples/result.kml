@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Folder>
+    <Placemark>
+      <name>#Point1</name>
+      <description>#Desc1</description>
+      <Point>
+        <coordinates>115.16377,-8.7332</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>#Points2</name>
+      <description>#Desc2</description>
+      <Point>
+        <coordinates>115.16414,-8.73132</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>#Line1-2</name>
+      <description>#Desc3</description>
+      <LineString>
+        <coordinates>115.16377,-8.7332 115.16414,-8.73132</coordinates>
+      </LineString>
+    </Placemark>
+  </Folder>
+</kml>
