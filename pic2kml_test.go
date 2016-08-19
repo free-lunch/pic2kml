@@ -32,7 +32,7 @@ func TestGetAddress(t *testing.T) {
 }
 
 func TestGetExif(t *testing.T) {
-	exif, err := GetExif("sample.jpg", true)
+	exif, err := GetExif("./samples/sample.jpg", true)
 	if err != nil {
 		t.Errorf("GetExif() == %#v, want nil", err)
 		return
