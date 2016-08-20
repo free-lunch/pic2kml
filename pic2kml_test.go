@@ -62,8 +62,9 @@ func TestMakePoint(t *testing.T) {
 		t.Errorf("GetExif() == %#v, want nil", err)
 		return
 	}
+	exif.Number = 1
 
-	point, err := p.MakePoint(1, exif)
+	point, err := p.MakePoint(exif)
 	if err != nil {
 		t.Errorf("MakePoint() == %#v,Error is %#v", point, err)
 	}
@@ -72,13 +73,15 @@ func TestMakePoint(t *testing.T) {
 func TestMakePoint_Withkey(t *testing.T) {
 	p := new(Pic2Kml)
 	p.SetApiKey(key)
+
 	exif, err := p.GetExif("./samples/sample.jpg")
 	if err != nil {
 		t.Errorf("GetExif() == %#v, want nil", err)
 		return
 	}
+	exif.Number = 1
 
-	point, err := p.MakePoint(1, exif)
+	point, err := p.MakePoint(exif)
 	if err != nil {
 		t.Errorf("MakePoint() == %#v,Error is %#v", point, err)
 	}

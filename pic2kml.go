@@ -29,11 +29,12 @@ type GeoAPIResponse struct {
 }
 
 type Exif struct {
-	Lat  float64
-	Lon  float64
-	Time string
-	Date string
-	Addr string
+	Number int
+	Lat    float64
+	Lon    float64
+	Time   string
+	Date   string
+	Addr   string
 }
 
 func (p *Pic2Kml) SetApiKey(key string) {
@@ -105,14 +106,14 @@ func (p *Pic2Kml) GetAddress(lat, lon float64) (string, error) {
 	return s.Results[0].Address, nil
 }
 
-func (p *Pic2Kml) MakePoint(n int, exif *Exif) (*kml.CompoundElement, error) {
+func (p *Pic2Kml) MakePoint(exif *Exif) (*kml.CompoundElement, error) {
 	// TODO: Make markpoins for kml
 	if *exif == (Exif{}) {
 		return nil, errors.New("Not exist EXIF")
 	}
 
 	k := kml.Placemark(
-		kml.Name("#"+string(n)), // Time
+		kml.Name("#"+string(exif.Number)), // Time
 		kml.Description(exif.Date+"\n"+exif.Time+"\n"+exif.Addr),
 		kml.Point(
 			kml.Coordinates(kml.Coordinate{Lat: exif.Lat, Lon: exif.Lon}),
@@ -122,7 +123,7 @@ func (p *Pic2Kml) MakePoint(n int, exif *Exif) (*kml.CompoundElement, error) {
 	return k, nil
 }
 
-func (p *Pic2Kml) MakeLine(exifs []Exif) (*kml.CompoundElement, error) {
+func (p *Pic2Kml) MakeLine(start *Exif, end *Exif) (*kml.CompoundElement, error) {
 	// TODO: Make linestrings for kml
 	return nil, nil
 }
