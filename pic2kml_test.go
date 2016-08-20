@@ -5,8 +5,9 @@ import (
 	"testing"
 )
 
+const key string = "AIzaSyCGrUW1AhRTaYKW4x9sD0AnQg3nQzRYGQQ"
+
 func TestSetApiKey(t *testing.T) {
-	key := "AIzaSyCGrUW1AhRTaYKW4x9sD0AnQg3nQzRYGQQ"
 	p := new(Pic2Kml)
 	p.SetApiKey(key)
 }
@@ -14,7 +15,6 @@ func TestSetApiKey(t *testing.T) {
 func TestGetAddress(t *testing.T) {
 	result := "Jl. Samudra, Kuta, Kabupaten Badung, Bali 80361, Indonesia"
 	lat, lon := -8.733203944444444, 115.16377158333334
-	key := "AIzaSyCGrUW1AhRTaYKW4x9sD0AnQg3nQzRYGQQ"
 
 	p := new(Pic2Kml)
 	p.SetApiKey(key)
@@ -34,6 +34,18 @@ func TestGetAddress(t *testing.T) {
 
 func TestGetExif(t *testing.T) {
 	p := new(Pic2Kml)
+	exif, err := p.GetExif("./samples/sample.jpg")
+	if err != nil {
+		t.Errorf("GetExif() == %#v, want nil", err)
+		return
+	}
+
+	t.Log(fmt.Sprintf("GetExif() is Success, exif is %+v", exif))
+}
+
+func TestGetExif_WithKey(t *testing.T) {
+	p := new(Pic2Kml)
+	p.SetApiKey(key)
 	exif, err := p.GetExif("./samples/sample.jpg")
 	if err != nil {
 		t.Errorf("GetExif() == %#v, want nil", err)
