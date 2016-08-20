@@ -2,6 +2,7 @@ package pic2kml
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -13,6 +14,10 @@ import (
 	"github.com/rwcarlsen/goexif/mknote"
 	kml "github.com/twpayne/go-kml"
 )
+
+type Pic2Kml struct {
+	apikey string
+}
 
 type Result struct {
 	Address string `json:"formatted_address"`
@@ -31,13 +36,11 @@ type Exif struct {
 	Addr string
 }
 
-var apikey string
-
-func SetApiKey(key string) {
-	apikey = key
+func (p *Pic2Kml) SetApiKey(key string) {
+	p.apikey = key
 }
 
-func GetExif(fn string, useAddr bool) (*Exif, error) {
+func (p *Pic2Kml) GetExif(fn string) (*Exif, error) {
 	var s = new(Exif)
 	f, err := os.Open(fn)
 	defer f.Close()
@@ -66,13 +69,13 @@ func GetExif(fn string, useAddr bool) (*Exif, error) {
 	s.Date = timeArray[0]
 	s.Time = timeArray[1]
 
-	if useAddr && apikey != "" {
-		s.Addr, _ = GetAddress(lat, lon, apikey)
+	if p.apikey != "" {
+		s.Addr, _ = p.GetAddress(lat, lon)
 	}
 	return s, nil
 }
 
-func GetResults(body []byte) (*GeoAPIResponse, error) {
+func (p *Pic2Kml) GetResults(body []byte) (*GeoAPIResponse, error) {
 	var s = new(GeoAPIResponse)
 	err := json.Unmarshal(body, &s)
 	if err != nil {
@@ -81,9 +84,13 @@ func GetResults(body []byte) (*GeoAPIResponse, error) {
 	return s, nil
 }
 
-func GetAddress(lat, lon float64, key string) (string, error) {
+func (p *Pic2Kml) GetAddress(lat, lon float64) (string, error) {
+	if p.apikey == "" {
+		return "", errors.New("Not exist Google API key")
+	}
+
 	base_url := "https://maps.googleapis.com/maps/api/geocode/json"
-	query := fmt.Sprintf("?latlng=%f,%f&key=%s", lat, lon, key)
+	query := fmt.Sprintf("?latlng=%f,%f&key=%s", lat, lon, p.apikey)
 	resp, err := http.Get(base_url + query)
 	if err != nil {
 		return "", err
@@ -91,24 +98,24 @@ func GetAddress(lat, lon float64, key string) (string, error) {
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
-	s, err := GetResults([]byte(body))
+	s, err := p.GetResults([]byte(body))
 	if err != nil {
 		return "", err
 	}
 	return s.Results[0].Address, nil
 }
 
-func MakePoints(k *kml.CompoundElement, exifs []Exif) error {
+func (p *Pic2Kml) MakePoints(k *kml.CompoundElement, exifs []Exif) error {
 	// TODO: Make markpoins for kml
 	return nil
 }
 
-func MakeLines(k *kml.CompoundElement, exifs []Exif) error {
+func (p *Pic2Kml) MakeLines(k *kml.CompoundElement, exifs []Exif) error {
 	// TODO: Make linestrings for kml
 	return nil
 }
 
-func MakeKml(file_name string) {
+func (p *Pic2Kml) MakeKml(file_name string) {
 
 	// Now, This is test code for making kml
 	// TODO : Call MakePoints and MakeLines and then make a kml file

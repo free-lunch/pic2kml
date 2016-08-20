@@ -7,17 +7,18 @@ import (
 
 func TestSetApiKey(t *testing.T) {
 	key := "AIzaSyCGrUW1AhRTaYKW4x9sD0AnQg3nQzRYGQQ"
-	SetApiKey(key)
+	p := new(Pic2Kml)
+	p.SetApiKey(key)
 }
 
 func TestGetAddress(t *testing.T) {
-	// Need to check API
-
 	result := "Jl. Samudra, Kuta, Kabupaten Badung, Bali 80361, Indonesia"
 	lat, lon := -8.733203944444444, 115.16377158333334
 	key := "AIzaSyCGrUW1AhRTaYKW4x9sD0AnQg3nQzRYGQQ"
 
-	addr, err := GetAddress(lat, lon, key)
+	p := new(Pic2Kml)
+	p.SetApiKey(key)
+	addr, err := p.GetAddress(lat, lon)
 	if err != nil {
 		t.Errorf("GetAddress() == %#v, want nil", err)
 		return
@@ -32,7 +33,8 @@ func TestGetAddress(t *testing.T) {
 }
 
 func TestGetExif(t *testing.T) {
-	exif, err := GetExif("./samples/sample.jpg", true)
+	p := new(Pic2Kml)
+	exif, err := p.GetExif("./samples/sample.jpg")
 	if err != nil {
 		t.Errorf("GetExif() == %#v, want nil", err)
 		return
@@ -42,5 +44,6 @@ func TestGetExif(t *testing.T) {
 }
 
 func TestMakeKml(t *testing.T) {
-	MakeKml("result.kml")
+	p := new(Pic2Kml)
+	p.MakeKml("result.kml")
 }
