@@ -105,14 +105,26 @@ func (p *Pic2Kml) GetAddress(lat, lon float64) (string, error) {
 	return s.Results[0].Address, nil
 }
 
-func (p *Pic2Kml) MakePoints(k *kml.CompoundElement, exifs []Exif) error {
+func (p *Pic2Kml) MakePoint(n int, exif *Exif) (*kml.CompoundElement, error) {
 	// TODO: Make markpoins for kml
-	return nil
+	if *exif == (Exif{}) {
+		return nil, errors.New("Not exist EXIF")
+	}
+
+	k := kml.Placemark(
+		kml.Name("#"+string(n)), // Time
+		kml.Description(exif.Date+"\n"+exif.Time+"\n"+exif.Addr),
+		kml.Point(
+			kml.Coordinates(kml.Coordinate{Lat: exif.Lat, Lon: exif.Lon}),
+		),
+	)
+
+	return k, nil
 }
 
-func (p *Pic2Kml) MakeLines(k *kml.CompoundElement, exifs []Exif) error {
+func (p *Pic2Kml) MakeLine(exifs []Exif) (*kml.CompoundElement, error) {
 	// TODO: Make linestrings for kml
-	return nil
+	return nil, nil
 }
 
 func (p *Pic2Kml) MakeKml(file_name string) {

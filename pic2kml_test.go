@@ -55,6 +55,35 @@ func TestGetExif_WithKey(t *testing.T) {
 	t.Log(fmt.Sprintf("GetExif() is Success, exif is %+v", exif))
 }
 
+func TestMakePoint(t *testing.T) {
+	p := new(Pic2Kml)
+	exif, err := p.GetExif("./samples/sample.jpg")
+	if err != nil {
+		t.Errorf("GetExif() == %#v, want nil", err)
+		return
+	}
+
+	point, err := p.MakePoint(1, exif)
+	if err != nil {
+		t.Errorf("MakePoint() == %#v,Error is %#v", point, err)
+	}
+}
+
+func TestMakePoint_Withkey(t *testing.T) {
+	p := new(Pic2Kml)
+	p.SetApiKey(key)
+	exif, err := p.GetExif("./samples/sample.jpg")
+	if err != nil {
+		t.Errorf("GetExif() == %#v, want nil", err)
+		return
+	}
+
+	point, err := p.MakePoint(1, exif)
+	if err != nil {
+		t.Errorf("MakePoint() == %#v,Error is %#v", point, err)
+	}
+}
+
 func TestMakeKml(t *testing.T) {
 	p := new(Pic2Kml)
 	p.MakeKml("result.kml")
