@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>KML Layers</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+<!--TODO: Modify javascript to template format -->
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 17,
+    center: {lat: -8.733, lng: 115.163}
+  });
+
+  var travlePathCoordinates = [
+
+  {lat:-8.733 , lng: 115.163},
+  {lat:-8.736 , lng:115.163 },
+  // {lat: 21.291, lng: -157.821},
+  // {lat: -18.142, lng: 178.431},
+  // {lat: -27.467, lng: 153.027}
+];
+
+  var travelPath = new google.maps.Polyline({
+    path: travlePathCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  travelPath.setMap(map);
+
+
+  // var ctaLayer = new google.maps.KmlLayer({
+  //   url: 'http://googlemaps.github.io/js-v2-samples/ggeoxml/cta.kml',
+  //   map: map
+  // });
+}
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key={{apikey}}&signed_in=true&callback=initMap">
+    </script>
+  </body>
+</html>
