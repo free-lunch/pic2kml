@@ -23,14 +23,14 @@ func main() {
 	}
 
 	flag.Parse()
-	folder := os.Args[1]
+	pictures_folder := os.Args[1]
 
-	fn := *result_filename
-	if !strings.Contains(fn, ".kml") {
-		fn += ".kml"
+	result_fn := *result_filename
+	if !strings.Contains(result_fn, ".kml") {
+		result_fn += ".kml"
 	}
-	if err := pic2kml.MakeKml(folder, fn); err != nil {
+
+	if err := pic2kml.MakeKml(pictures_folder, result_fn); err != nil {
 		fmt.Printf("Failed makekml, Error : %s", err)
 	}
 }
-
