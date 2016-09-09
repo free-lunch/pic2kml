@@ -7,6 +7,7 @@ install:
         - go get github.com/rwcarlsen/goexif/exif
         - go get github.com/rwcarlsen/goexif/mknote
         - go get github.com/twpayne/go-kml
+        - go get github.com/lucasb-eyer/go-colorful
 
 script:
         - go test -v .
