@@ -7,7 +7,7 @@ import (
 
 
 func TestDefault(t *testing.T){
-	os.Args = []string{"__", "./samples"}
+	os.Args = []string{"__", "-pf=./samples"}
 	main()
 	if !FileExist("./default_result.kml") {
 		t.Errorf("Not exist Default result file ")
@@ -15,7 +15,7 @@ func TestDefault(t *testing.T){
 }
 
 func TestResultFileName(t *testing.T){
-	os.Args = []string{"__", "./samples", "-result_filename=TestResult.kml"}
+	os.Args = []string{"__", "-pf=./samples", "-rf=./TestResult.kml"}
 	main()
 	FileExist("./TestResult.kml")
 	if !FileExist("./TestResult.kml") {

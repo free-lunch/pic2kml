@@ -12,8 +12,8 @@ import (
 var (
 	apikey *string = flag.String("apikey", "", "Google API Key for changing from gps location to address")
 	daysplit *bool = flag.Bool("daysplit", false, "Support spliting result using days")
-	result_filename *string = flag.String("result_filename", "default_result.kml", "Reusult KML file name ")
-	pictures_folder string = "./samples"
+	result_filename *string = flag.String("rf", "default_result.kml", "Reusult KML file name ")
+	pictures_folder *string = flag.String("pf", "./samples", "Pictures folder name")
 )
 
 func FileExist(path string) bool {
@@ -26,13 +26,7 @@ func FileExist(path string) bool {
 func main() {
 	flag.Parse()
 
-	if len(os.Args) >= 2 {
-		pictures_folder = os.Args[1]
-	} else {
-		fmt.Println("Must need to pictures folder, Please check your command", os.Args)
-	}
-
-	if !FileExist(pictures_folder) {
+	if !FileExist(*pictures_folder) {
 		fmt.Println("Please check path of pictures : ", pictures_folder)
 		return
 	}
@@ -42,7 +36,10 @@ func main() {
 		result_fn += ".kml"
 	}
 
-	if err := pic2kml.MakeKml(pictures_folder, result_fn); err != nil {
+	if err := pic2kml.MakeKml(*pictures_folder, result_fn); err != nil {
 		fmt.Printf("Failed makekml, Error : %s", err)
 	}
+
+	fmt.Println("Picture Folder : ", *pictures_folder)
+	fmt.Println("Result File  : ", *result_filename)
 }
