@@ -13,17 +13,29 @@ var (
 	apikey *string = flag.String("apikey", "", "Google API Key for changing from gps location to address")
 	daysplit *bool = flag.Bool("daysplit", false, "Support spliting result using days")
 	result_filename *string = flag.String("result_filename", "default_result.kml", "Reusult KML file name ")
+	pictures_folder string = "./samples"
 )
 
+func FileExist(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Please check your command, Must need to PICTURES_FOLDER")
-		return
+	flag.Parse()
+
+	if len(os.Args) >= 2 {
+		pictures_folder = os.Args[1]
+	} else {
+		fmt.Println("Must need to pictures folder, Please check your command", os.Args)
 	}
 
-	flag.Parse()
-	pictures_folder := os.Args[1]
+	if !FileExist(pictures_folder) {
+		fmt.Println("Please check path of pictures : ", pictures_folder)
+		return
+	}
 
 	result_fn := *result_filename
 	if !strings.Contains(result_fn, ".kml") {
