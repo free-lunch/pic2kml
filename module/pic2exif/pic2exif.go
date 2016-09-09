@@ -7,6 +7,7 @@ import (
 	"sort"
 	"github.com/rwcarlsen/goexif/exif"
 	"github.com/rwcarlsen/goexif/mknote"
+	"fmt"
 )
 
 type Pic2Exif  struct {
@@ -39,7 +40,6 @@ func GetExif(fileName string, apiKey string) (*Exif, error) {
 	}
 
 	exif.RegisterParsers(mknote.All...)
-
 	x, err := exif.Decode(f)
 	if err != nil {
 		return s, err
@@ -70,7 +70,6 @@ func (p *Pic2Exif) MakeExifGroupFromFolder(Folder string) (*ExifGroup, error) {
 		if info.IsDir() {
 			return nil
 		}
-
 		// Check a  type of picture
 		ext := strings.ToLower(filepath.Ext(path))
 		switch ext {
@@ -87,6 +86,7 @@ func (p *Pic2Exif) MakeExifGroupFromFolder(Folder string) (*ExifGroup, error) {
 			return nil
 		}
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		exifGroup = append(exifGroup, exif)

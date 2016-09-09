@@ -16,8 +16,6 @@ func Folder_Check(path string ) (bool, error){
 }
 
 func MakeKml(pictures_folder string, result_name string, options ...interface{} ) error {
-	// TODO : Need to Implementation about Handle options
-
 	p2e := pic2exif.NewPic2Exif()
 	exifGroup, err := p2e.MakeExifGroupFromFolder(pictures_folder)
 	if err != nil {
@@ -26,7 +24,7 @@ func MakeKml(pictures_folder string, result_name string, options ...interface{} 
 	}
 
 	e2k := exif2kml.NewExif2Kml()
-	e2k.SetExifGroup(exifGroup)
+	e2k.SetExifGroup(*exifGroup)
 	if err := e2k.MakeKml(result_name); err != nil {
 		fmt.Println("[Error] Pic2Kml : MakeKml : ", err)
 		return err
